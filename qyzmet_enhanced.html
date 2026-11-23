@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qyzmet — онлайн кезек</title>
+<style>
+:root{
+  --navy:#172b4d;--blue:#2d5b9a;--blue2:#4778b8;--sky:#edf4fb;
+  --paper:#ffffff;--bg:#f3f6fa;--ink:#26364a;--muted:#718096;
+  --line:#dce4ee;--green:#277653;--green-bg:#e8f5ee;
+  --orange:#a65c13;--orange-bg:#fff3df;--red:#a83d3d;--red-bg:#fff0ef;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{background:var(--navy);color:#fff}
+.nav{max-width:1180px;margin:auto;padding:17px 22px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.4px;font-size:21px}
+.brand-mark{width:37px;height:37px;border-radius:10px;background:#fff;color:var(--navy);display:grid;place-items:center;font-size:19px}
+.brand span:last-child{color:#c7dcf7}
+.nav-right{display:flex;align-items:center;gap:22px;font-size:13px;color:#d9e5f5}
+.nav-right a{color:inherit;text-decoration:none}
+.nav-right a:hover{text-decoration:underline}
+.hero{background:linear-gradient(110deg,#e8f0f9 0%,#f7f9fc 65%,#e1ebf7 100%);border-bottom:1px solid var(--line)}
+.hero-inner{max-width:1180px;margin:auto;padding:34px 22px 32px;display:flex;align-items:center;justify-content:space-between;gap:25px}
+.eyebrow{text-transform:uppercase;letter-spacing:1.6px;font-size:11px;font-weight:800;color:var(--blue);margin-bottom:10px}
+h1{font-size:clamp(27px,4vw,38px);line-height:1.13;margin:0 0 12px;color:var(--navy)}
+.hero p{max-width:650px;color:#5f6f84;line-height:1.65;margin:0;font-size:15px}
+.hero-note{background:#fff;border:1px solid #d9e4f1;border-radius:13px;padding:16px 18px;min-width:190px;box-shadow:0 5px 18px #1c3b5c0b}
+.hero-note strong{display:block;font-size:14px;margin-bottom:5px;color:var(--navy)}
+.hero-note span{font-size:12px;line-height:1.5;color:var(--muted)}
+main{max-width:1180px;margin:25px auto 45px;padding:0 22px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:13px}
+.stat-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:11px;background:var(--sky);color:var(--blue);font-size:20px}
+.stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}
+.stat strong{font-size:23px;color:var(--navy)}
+.layout{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(0,1.3fr);gap:20px;align-items:start}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 4px 16px #1c3b5c08}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:19px}
+.panel h2{font-size:19px;margin:0 0 5px;color:var(--navy)}
+.subheading{font-size:12px;color:var(--muted);line-height:1.5}
+.section-number{font-size:12px;color:#8494a9;background:#f1f4f8;border-radius:7px;padding:6px 8px;font-weight:700}
+label{display:block;font-size:13px;font-weight:700;color:#43536a;margin:15px 0 7px}
+input,select,textarea{font:inherit;width:100%;border:1px solid #d2dce8;background:#fff;color:var(--ink);border-radius:8px;padding:11px 12px;font-size:14px;outline:none;transition:border .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #4778b81b}
+input::placeholder,textarea::placeholder{color:#a0aaba}
+textarea{resize:vertical;min-height:75px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{font:inherit;font-size:13px;font-weight:700;border:0;border-radius:8px;padding:11px 14px;cursor:pointer;transition:background .15s,transform .15s}
+button:hover{transform:translateY(-1px)}
+.primary{background:var(--blue);color:#fff;width:100%;margin-top:20px}
+.primary:hover{background:#234a80}
+.secondary{background:#eaf1fa;color:var(--blue)}
+.secondary:hover{background:#dce8f7}
+.danger{background:var(--red-bg);color:var(--red);padding:8px 10px}
+.ghost{background:#f1f4f8;color:#475569;padding:8px 10px}
+.button-row{display:flex;gap:8px;flex-wrap:wrap}
+.notice{display:none;margin-top:13px;border-radius:8px;padding:11px 12px;font-size:13px;line-height:1.5}
+.notice.ok{display:block;background:var(--green-bg);color:var(--green)}
+.notice.error{display:block;background:var(--red-bg);color:var(--red)}
+.notice.info{display:block;background:var(--sky);color:var(--blue)}
+.hint{font-size:11px;color:#8290a3;line-height:1.5;margin-top:7px}
+.filters{display:grid;grid-template-columns:minmax(0,1fr) 155px;gap:9px;margin-bottom:13px}
+.filter-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+.result-count{font-size:12px;color:var(--muted)}
+.appointment{border:1px solid var(--line);border-radius:11px;padding:15px;margin-top:11px;background:#fff}
+.ap-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ap-title{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.ap-sub{font-size:12px;line-height:1.7;color:#66758a;overflow-wrap:anywhere}
+.ap-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.tag{display:inline-block;border-radius:5px;padding:5px 8px;font-size:10px;font-weight:800;background:#edf3fa;color:#46658c}
+.pill{display:inline-block;border-radius:30px;padding:5px 8px;font-size:10px;font-weight:800;white-space:nowrap;background:var(--green-bg);color:var(--green)}
+.empty{border:1px dashed #c9d4e1;border-radius:10px;text-align:center;padding:29px 15px;color:var(--muted);font-size:13px;line-height:1.7}
+.empty strong{display:block;color:#53657c;font-size:14px;margin-bottom:5px}
+.service-strip{margin-top:22px}
+.service-strip h2{font-size:17px;color:var(--navy);margin:0 0 12px}
+.service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.service-card{border:1px solid var(--line);background:#fff;border-radius:11px;padding:15px}
+.service-card .symbol{font-size:19px;margin-bottom:10px;color:var(--blue)}
+.service-card strong{display:block;font-size:12px;margin-bottom:6px;color:var(--navy)}
+.service-card p{font-size:11px;color:var(--muted);line-height:1.5;margin:0}
+footer{border-top:1px solid var(--line);background:#fff;color:#7c899b;text-align:center;padding:19px 15px;font-size:11px}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#12243a88;z-index:10;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.open{display:flex}
+.modal{width:min(440px,100%);background:#fff;border-radius:14px;padding:22px;box-shadow:0 18px 50px #0002}
+.modal h2{margin:0 0 8px;font-size:19px;color:var(--navy)}
+.modal p{font-size:13px;color:var(--muted);line-height:1.6}
+.modal-buttons{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.service-grid{grid-template-columns:repeat(2,1fr)}.hero-note{display:none}}
+@media(max-width:520px){.nav{padding:14px 16px}.nav-right{gap:12px;font-size:11px}.hero-inner{padding:27px 16px}.hero p{font-size:14px}main{padding:0 14px;margin-top:17px}.stats{gap:8px}.stat{padding:12px 10px;gap:8px}.stat-icon{display:none}.stat strong{font-size:20px}.stat small{font-size:10px}.panel{padding:17px}.two{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.filter-actions{align-items:flex-start;flex-direction:column}.service-grid{gap:8px}.service-card{padding:12px}}
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <div class="brand"><div class="brand-mark">Q</div><div>QYZMET<span>.</span></div></div>
+    <div class="nav-right"><a href="#booking">Жазылу</a><a href="#appointments">Менің жазылуларым</a></div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Қызмет көрсету орталығы</div>
+      <h1>Кезекке тұру — енді оңай</h1>
+      <p>Қажетті қызметті таңдап, өзіңізге ыңғайлы күн мен уақытқа жазылыңыз. Жазылуларыңызды осы беттен қарап, іздеп немесе қажет болса жоя аласыз.</p>
+    </div>
+    <div class="hero-note"><strong>Онлайн жазылу</strong><span>Уақытты алдын ала жоспарлаңыз.<br>Кезекке қайта тұрудың қажеті жоқ.</span></div>
+  </div>
+</section>
+
+<main>
+  <section class="stats" aria-label="Жазылулар статистикасы">
+    <div class="stat"><div class="stat-icon">▣</div><div><small>Барлық жазылу</small><strong id="totalCount">0</strong></div></div>
+    <div class="stat"><div class="stat-icon">◷</div><div><small>Алдағы жазылулар</small><strong id="upcomingCount">0</strong></div></div>
+    <div class="stat"><div class="stat-icon">✓</div><div><small>Бүгінгі жазылулар</small><strong id="todayCount">0</strong></div></div>
+  </section>
+
+  <div class="layout">
+    <section class="panel" id="booking">
+      <div class="panel-head">
+        <div><h2>Жаңа жазылу</h2><div class="subheading">Форманы толтырып, жазылуды сақтаңыз.</div></div>
+        <span class="section-number">01</span>
+      </div>
+      <form id="bookingForm">
+        <label for="service">Қызмет түрі *</label>
+        <select id="service" required>
+          <option value="">Қызметті таңдаңыз</option>
+          <option>Маманнан кеңес алу</option>
+          <option>Құжат рәсімдеу</option>
+          <option>Құжаттарды тексеру</option>
+          <option>Өтініш беру</option>
+          <option>Анықтама алу</option>
+          <option>Басқа қызмет</option>
+        </select>
+        <div class="two">
+          <div><label for="date">Күні *</label><input id="date" type="date" required></div>
+          <div><label for="time">Уақыты *</label>
+            <select id="time" required>
+              <option value="">Уақытты таңдаңыз</option>
+              <option>09:00</option><option>09:30</option><option>10:00</option>
+              <option>10:30</option><option>11:00</option><option>11:30</option>
+              <option>12:00</option><option>12:30</option><option>14:00</option>
+              <option>14:30</option><option>15:00</option><option>15:30</option>
+              <option>16:00</option><option>16:30</option>
+            </select>
+          </div>
+        </div>
+        <label for="name">Аты-жөні *</label>
+        <input id="name" type="text" placeholder="Мысалы: Айдос Нұрланұлы" required maxlength="80" autocomplete="name">
+        <div class="two">
+          <div><label for="phone">Телефон нөмірі *</label><input id="phone" type="tel" placeholder="+7 700 000 00 00" required maxlength="20" autocomplete="tel"></div>
+          <div><label for="email">Электрондық пошта</label><input id="email" type="email" placeholder="name@mail.kz" maxlength="100" autocomplete="email"></div>
+        </div>
+        <label for="comment">Қосымша ескерту</label>
+        <textarea id="comment" maxlength="250" placeholder="Қажет болса, қысқаша жазыңыз (міндетті емес)"></textarea>
+        <div class="hint">* белгісі бар өрістерді толтыру қажет.</div>
+        <button class="primary" type="submit">Жазылуды сақтау</button>
+        <div id="message" class="notice" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="panel" id="appointments">
+      <div class="panel-head">
+        <div><h2>Менің жазылуларым</h2><div class="subheading">Сақталған жазылуларды басқару.</div></div>
+        <span class="section-number">02</span>
+      </div>
+      <div class="filters">
+        <input id="search" type="search" placeholder="Аты, телефон немесе қызмет..." aria-label="Жазылуларды іздеу">
+        <select id="dateFilter" aria-label="Күні бойынша сүзгі">
+          <option value="all">Барлық күндер</option>
+          <option value="today">Бүгін</option>
+          <option value="upcoming">Алдағы күндер</option>
+          <option value="past">Өткен жазылулар</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <span class="result-count" id="resultCount">0 жазылу</span>
+        <div class="button-row">
+          <button class="secondary" id="exportBtn" type="button">CSV жүктеу</button>
+          <button class="ghost" id="clearSearch" type="button">Сүзгіні тазарту</button>
+        </div>
+      </div>
+      <div id="appointmentList" aria-live="polite"></div>
+      <div id="listMessage" class="notice" role="status"></div>
+    </section>
+  </div>
+
+  <section class="service-strip">
+    <h2>Қызметтер туралы</h2>
+    <div class="service-grid">
+      <article class="service-card"><div class="symbol">▤</div><strong>Құжат рәсімдеу</strong><p>Қажетті құжаттарды дайындау бойынша өтініш беру.</p></article>
+      <article class="service-card"><div class="symbol">⌕</div><strong>Құжаттарды тексеру</strong><p>Құжаттар мен мәліметтерді тексеруге жазылу.</p></article>
+      <article class="service-card"><div class="symbol">◎</div><strong>Маман кеңесі</strong><p>Сұрақтарыңыз бойынша маманнан кеңес алу.</p></article>
+      <article class="service-card"><div class="symbol">▣</div><strong>Өтініш беру</strong><p>Өтінішті тапсыру үшін ыңғайлы уақытты таңдау.</p></article>
+    </div>
+  </section>
+</main>
+
+<div class="modal-backdrop" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <h2 id="modalTitle">Жазылуды жою керек пе?</h2>
+    <p>Бұл жазылу тізімнен өшіріледі. Әрекетті кейін қайтару мүмкін емес.</p>
+    <div class="modal-buttons"><button class="secondary" id="cancelDelete" type="button">Қайту</button><button class="danger" id="confirmDelete" type="button">Жою</button></div>
+  </div>
+</div>
+
+<footer>QYZMET · Онлайн кезекке жазылу жүйесі · Оқу жобасы</footer>
+<script>
+const form = document.getElementById('bookingForm');
+const serviceInput = document.getElementById('service');
+const dateInput = document.getElementById('date');
+const timeInput = document.getElementById('time');
+const nameInput = document.getElementById('name');
+const phoneInput = document.getElementById('phone');
+const emailInput = document.getElementById('email');
+const commentInput = document.getElementById('comment');
+const message = document.getElementById('message');
+const list = document.getElementById('appointmentList');
+const searchInput = document.getElementById('search');
+const dateFilter = document.getElementById('dateFilter');
+const deleteModal = document.getElementById('deleteModal');
+let deleteId = null;
+let appointments = [];
+try {
+  const saved = JSON.parse(localStorage.getItem('qyzmetAppointments') || '[]');
+  appointments = Array.isArray(saved) ? saved : [];
+} catch { appointments = []; }
+
+function getLocalDate() {
+  const now = new Date();
+  return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+}
+const today = getLocalDate();
+dateInput.min = today;
+dateInput.value = today;
+
+function saveAppointments() {
+  try {
+    localStorage.setItem('qyzmetAppointments', JSON.stringify(appointments));
+    return true;
+  } catch {
+    showMessage('Браузерде сақтау мүмкін болмады. Жадқа рұқсат барын тексеріңіз.', 'error');
+    return false;
+  }
+}
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = 'notice ' + type;
+}
+function showListMessage(text, type) {
+  const el = document.getElementById('listMessage');
+  el.textContent = text;
+  el.className = 'notice ' + type;
+}
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[ch]));
+}
+function dateStatus(a) {
+  if (a.date < today) return 'Өткен';
+  if (a.date === today) return 'Бүгін';
+  return 'Алдағы';
+}
+function updateStats() {
+  document.getElementById('totalCount').textContent = appointments.length;
+  document.getElementById('upcomingCount').textContent = appointments.filter(a => a.date >= today).length;
+  document.getElementById('todayCount').textContent = appointments.filter(a => a.date === today).length;
+}
+function renderAppointments() {
+  const query = searchInput.value.trim().toLocaleLowerCase('kk');
+  const filter = dateFilter.value;
+  const filtered = appointments.filter(a => {
+    const text = [a.name, a.service, a.phone, a.email, a.comment].join(' ').toLocaleLowerCase('kk');
+    const matchesText = text.includes(query);
+    const matchesDate = filter === 'all' ||
+      (filter === 'today' && a.date === today) ||
+      (filter === 'upcoming' && a.date > today) ||
+      (filter === 'past' && a.date < today);
+    return matchesText && matchesDate;
+  }).sort((a,b) => (a.date + a.time).localeCompare(b.date + b.time));
+
+  document.getElementById('resultCount').textContent = filtered.length + (filtered.length === 1 ? ' жазылу' : ' жазылу');
+  if (!filtered.length) {
+    list.innerHTML = '<div class="empty"><strong>' +
+      (appointments.length ? 'Сәйкес жазылу табылмады' : 'Әзірге жазылу жоқ') +
+      '</strong>' + (appointments.length ? 'Іздеу сөзін немесе күн сүзгісін өзгертіп көріңіз.' : 'Алғашқы жазылуды сол жақтағы форма арқылы қосыңыз.') + '</div>';
+    updateStats();
+    return;
+  }
+  list.innerHTML = filtered.map(a => `
+    <article class="appointment">
+      <div class="ap-top">
+        <div>
+          <div class="ap-title">${escapeHTML(a.service)}</div>
+          <div class="ap-sub">${escapeHTML(a.name)}<br>${escapeHTML(a.date)} · ${escapeHTML(a.time)}<br>${escapeHTML(a.phone)}${a.email ? '<br>'+escapeHTML(a.email) : ''}${a.comment ? '<br>Ескерту: '+escapeHTML(a.comment) : ''}</div>
+        </div>
+        <span class="pill">${dateStatus(a)}</span>
+      </div>
+      <div class="ap-meta"><span class="tag">Кезек уақыты: ${escapeHTML(a.time)}</span><span class="tag">${escapeHTML(a.date)}</span></div>
+      <div class="button-row" style="margin-top:12px"><button class="danger" type="button" data-delete="${escapeHTML(a.id)}">Жазылуды жою</button></div>
+    </article>`).join('');
+  updateStats();
+}
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  const service = serviceInput.value;
+  const date = dateInput.value;
+  const time = timeInput.value;
+  const name = nameInput.value.trim();
+  const phone = phoneInput.value.trim();
+  const email = emailInput.value.trim();
+  const comment = commentInput.value.trim();
+
+  if (!service || !date || !time || !name || !phone) {
+    showMessage('Барлық міндетті өрістерді толтырыңыз.', 'error');
+    return;
+  }
+  if (date < getLocalDate()) {
+    showMessage('Өткен күнге жазылу жасауға болмайды.', 'error');
+    return;
+  }
+  if (phone.replace(/\D/g, '').length < 10) {
+    showMessage('Телефон нөмірін дұрыс енгізіңіз (кемінде 10 сан).', 'error');
+    phoneInput.focus();
+    return;
+  }
+  const occupied = appointments.some(a => a.date === date && a.time === time);
+  if (occupied) {
+    showMessage('Бұл күн мен уақыт бұрын таңдалған. Басқа уақытты таңдаңыз.', 'error');
+    return;
+  }
+  const appointment = {
+    id: String(Date.now()) + Math.random().toString(16).slice(2),
+    service, date, time, name, phone, email, comment
+  };
+  appointments.push(appointment);
+  if (!saveAppointments()) {
+    appointments = appointments.filter(a => a.id !== appointment.id);
+    return;
+  }
+  renderAppointments();
+  form.reset();
+  dateInput.min = getLocalDate();
+  dateInput.value = getLocalDate();
+  showMessage('Жазылуыңыз сәтті сақталды. Мәліметтер тізімге қосылды.', 'ok');
+});
+list.addEventListener('click', event => {
+  const button = event.target.closest('[data-delete]');
+  if (!button) return;
+  deleteId = button.dataset.delete;
+  deleteModal.classList.add('open');
+});
+document.getElementById('cancelDelete').addEventListener('click', () => {
+  deleteId = null;
+  deleteModal.classList.remove('open');
+});
+document.getElementById('confirmDelete').addEventListener('click', () => {
+  if (!deleteId) return;
+  const oldLength = appointments.length;
+  appointments = appointments.filter(a => a.id !== deleteId);
+  deleteId = null;
+  deleteModal.classList.remove('open');
+  if (appointments.length !== oldLength) {
+    saveAppointments();
+    renderAppointments();
+    showListMessage('Жазылу жойылды.', 'ok');
+  }
+});
+deleteModal.addEventListener('click', event => {
+  if (event.target === deleteModal) {
+    deleteId = null;
+    deleteModal.classList.remove('open');
+  }
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    deleteId = null;
+    deleteModal.classList.remove('open');
+  }
+});
+searchInput.addEventListener('input', renderAppointments);
+dateFilter.addEventListener('change', renderAppointments);
+document.getElementById('clearSearch').addEventListener('click', () => {
+  searchInput.value = '';
+  dateFilter.value = 'all';
+  renderAppointments();
+  searchInput.focus();
+});
+document.getElementById('exportBtn').addEventListener('click', () => {
+  if (!appointments.length) {
+    showListMessage('CSV файлын жүктеу үшін алдымен жазылу қосыңыз.', 'error');
+    return;
+  }
+  const headers = ['Қызмет', 'Күні', 'Уақыты', 'Аты-жөні', 'Телефон', 'Email', 'Ескерту'];
+  const rows = appointments.map(a => [a.service, a.date, a.time, a.name, a.phone, a.email || '', a.comment || '']);
+  const csv = [headers, ...rows].map(row => row.map(value => '"' + String(value).replace(/"/g, '""') + '"').join(';')).join('\r\n');
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'qyzmet-zhazylular.csv';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  showListMessage('Жазылулар CSV файлына экспортталды.', 'ok');
+});
+renderAppointments();
+</script>
+</body>
+</html>
